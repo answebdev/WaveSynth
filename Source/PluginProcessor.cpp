@@ -137,7 +137,8 @@ void WaveSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     // Clear buffer of any samples we already have
     buffer.clear();
 
-    synth.processBlock(buffer, midiMessages)
+    synth.processBlock(buffer, midiMessages);
+
 }
 
 //==============================================================================
