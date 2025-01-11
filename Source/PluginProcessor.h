@@ -10,6 +10,8 @@
 
 #include <JuceHeader.h>
 
+#include "WaveSynth.h"
+
 //==============================================================================
 /**
 */
@@ -55,5 +57,7 @@ public:
 
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveSynthAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveSynthAudioProcessor)
+
+        WaveSynth synth;
 };

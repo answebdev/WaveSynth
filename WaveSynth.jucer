@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="hGBK6Q" name="WaveSynth" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildVST3"
+              pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="u5lByY" name="WaveSynth">
     <GROUP id="{26FD1792-759C-0E81-22E6-137691B79997}" name="Source">
       <FILE id="ibrMDt" name="PluginProcessor.cpp" compile="1" resource="0"
