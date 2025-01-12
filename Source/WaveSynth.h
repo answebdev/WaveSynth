@@ -1,5 +1,6 @@
 #pragma once
 #include "JuceHeader.h"
+#include "WaveTableOscillator.h"
 
 class WaveSynth
 {
@@ -15,5 +16,5 @@ private:
 	void render(juce::AudioBuffer<float>& buffer, int startSample, int endSample);
 
 	double sampleRate;
-	std::vector<WaveTableOscillators> oscillators;
+	std::vector<WaveTableOscillator> oscillators;
 };

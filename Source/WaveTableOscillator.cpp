@@ -9,9 +9,14 @@ WaveTableOscillator::WaveTableOscillator(std::vector<float> waveTable,
 
 }
 
-void WaveTableOscillator::setFrequency(float fequency) {
+//void WaveTableOscillator::setFrequency(float frequency) {
+//	indexIncrement = frequency * static_cast<float>(waveTable.size())
+//		/ static_cast<float>(sampleRate);
+//}
+
+void WaveTableOscillator::setFrequency(float frequency) {
 	indexIncrement = frequency * static_cast<float>(waveTable.size())
-		/ static_cast<float>(sampleRate);
+		/ (sampleRate);
 }
 
 float WaveTableOscillator::getSample() {
