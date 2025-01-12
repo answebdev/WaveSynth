@@ -1,7 +1,41 @@
 #include "WaveSynth.h"
 
+std::vector<float> WaveSynth::generateSineWaveTable() {
+	constexpr auto WAVETABLE_LENGTH = 64;
+
+	std::vector<float> sineWaveTable(WAVETABLE_LENGTH);
+
+	const auto PI = std::atanf(1.f) * 4;
+
+	for (auto i = 0; i < WAVETABLE_LENGTH; ++ i) {
+		sineWaveTable[i] = std::sinf(2 * PI * static_cast<float>(i) / static_cast<float>(WAVETABLE_LENGTH));
+	}
+	return sineWaveTable;
+}
+
+void WaveSynth::initializeOscillators() {
+	// Set number of oscillators: 128 (128 is the number of MIDI note numbers we have available.
+	// We choose 128 because we want to have a polyphonic wave table synthesizer,
+	// so that we can play multiple keys at once.
+	constexpr auto OSCILLATORS_COUNT = 128;
+
+	const auto waveTable = generateSineWaveTable();
+
+	// Clear oscillators
+	oscillators.clear();
+
+	// Initialize oscillators
+	for (auto i = 0; i < OSCILLATORS_COUNT; i++) {
+		oscillators.emplace_back(waveTable, sampleRate);
+	}
+}
+
 void WaveSynth::prepareToPlay(double sampleRate) {
 	this->sampleRate = sampleRate;
+
+	// Initialize the oscillators - every time the sampling rate changes,
+	// since the oscillators also depend on the sampling rate
+	initializeOscillators();
 }
 
 void WaveSynth::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) {
