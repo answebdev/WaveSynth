@@ -59,6 +59,30 @@ void WaveSynth::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&
 	render(buffer, currentSample, buffer.getNumSamples());
 }
 
+void WaveSynth::render(juce::AudioBuffer<float>& buffer, int startSample, int endSample) {
+	// Get pointer to the first channel
+	auto* firstChannel = buffer.getWritePointer(0);
+
+	// Iterate over oscillators
+	for (auto& oscillator : oscillators) {
+		// Check if oscillators are active
+		if (oscillator.isPlaying()) {
+			// If active, give samples in a specified range
+			for (auto sample = startSample; sample < endSample; ++sample) {
+				// Add to the channel -
+				// if we just assign each oscillator that is active,
+				// this would override what is already in the channel
+				firstChannel[sample] += oscillator.getSample();
+			}
+		}
+	}
+
+	// Do the same for all the remaining channels
+	for (auto channel = 1; channel < buffer.getNumChannels(); ++channel) {
+		std::copy(firstChannel + startSample, firstChannel + endSample, buffer.getWritePointer(channel) + startSample);
+	}
+}
+
 void WaveSynth::handleMidiEvent(const juce::MidiMessage& midiEvent) {
 	// The MIDI event is either the key is pressed, the key is released,
 	// or there is some other type of control information.
@@ -75,10 +99,13 @@ void WaveSynth::handleMidiEvent(const juce::MidiMessage& midiEvent) {
 		oscillators[oscillatorId].setFrequency(frequency);
 	}
 	else if (midiEvent.isNoteOff()) {
-
+		const auto oscillatorId = midiEvent.getNoteNumber();
+		oscillators[oscillatorId].stop();
 	}
 	else if (midiEvent.isAllNotesOff()) {
-
+		for (auto& oscillator : oscillators) {
+			oscillator.stop();
+		}
 	}
 }
 
